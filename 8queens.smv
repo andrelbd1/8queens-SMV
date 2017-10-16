@@ -1,0 +1,1118 @@
+MODULE main
+VAR
+  linhaRainha1: 0..9;
+  linhaRainha2: 0..9;
+  linhaRainha3: 0..9;
+  linhaRainha4: 0..9;
+  linhaRainha5: 0..9;
+  linhaRainha6: 0..9;
+  linhaRainha7: 0..9;
+  linhaRainha8: 0..9;
+
+  semaforo: 1..8;
+
+  col1: process rainha1(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo);
+  col2: process rainha2(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo);
+  col3: process rainha3(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo);
+  col4: process rainha4(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo);
+  col5: process rainha5(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo);
+  col6: process rainha6(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo);
+  col7: process rainha7(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo);
+  col8: process rainha8(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo);
+
+
+ASSIGN
+init(linhaRainha1) := 1..8;
+init(linhaRainha2) := 0;
+init(linhaRainha3) := 0;
+init(linhaRainha4) := 0;
+init(linhaRainha5) := 0;
+init(linhaRainha6) := 0;
+init(linhaRainha7) := 0;
+init(linhaRainha8) := 0;
+
+init(semaforo) := 1;
+
+next(linhaRainha1) := linhaRainha1;
+next(linhaRainha2) := linhaRainha2;
+next(linhaRainha3) := linhaRainha3;
+next(linhaRainha4) := linhaRainha4;
+next(linhaRainha5) := linhaRainha5;
+next(linhaRainha6) := linhaRainha6;
+next(linhaRainha7) := linhaRainha7;
+next(linhaRainha8) := linhaRainha8;
+
+next(semaforo) := 
+	case
+    semaforo = 1 : (linhaRainha1 = 0 | linhaRainha1 > 8) ? 1 : 2;   
+    
+    semaforo = 2 & linhaRainha2 = 0 : 2;
+    semaforo = 2 : linhaRainha2 > 8 ? 1 : 3;
+
+    semaforo = 3 & linhaRainha3 = 0 : 3;
+    semaforo = 3 : linhaRainha3 > 8 ? 2 : 4;
+
+    semaforo = 4 & linhaRainha4 = 0 : 4;
+    semaforo = 4 : linhaRainha4 > 8 ? 3 : 5; 
+
+    semaforo = 5 & linhaRainha5 = 0 : 5;
+    semaforo = 5 : linhaRainha5 > 8 ? 4 : 6;
+
+    semaforo = 6 & linhaRainha6 = 0 : 6;
+    semaforo = 6 : linhaRainha6 > 8 ? 5 : 7;
+
+    semaforo = 7 & linhaRainha7 = 0 : 7;
+    semaforo = 7 : linhaRainha7 > 8 ? 6 : 8;
+
+    semaforo = 8 & linhaRainha8 = 0 : 8;
+    semaforo = 8 : linhaRainha8 > 8 ? 7 : 8;
+
+    TRUE: semaforo;
+	esac;
+
+
+SPEC
+!EF!(
+    -- Rainhas no tabuleiro
+    (linhaRainha1 = 0 | linhaRainha2 = 0 | linhaRainha3 = 0 | linhaRainha4 = 0 | linhaRainha5 = 0 | linhaRainha6 = 0 | linhaRainha7 = 0 | linhaRainha8 = 0) |
+    (linhaRainha1 > 8 | linhaRainha2 > 8 | linhaRainha3 > 8 | linhaRainha4 > 8 | linhaRainha5 > 8 | linhaRainha6 > 8 | linhaRainha7 > 8 | linhaRainha8 > 8) |
+
+    -- linhaRainha
+    ((linhaRainha1 = linhaRainha2 | 
+    linhaRainha1 = linhaRainha3 | 
+    linhaRainha1 = linhaRainha4 | 
+    linhaRainha1 = linhaRainha5 | 
+    linhaRainha1 = linhaRainha6 | 
+    linhaRainha1 = linhaRainha7 | 
+    linhaRainha1 = linhaRainha8) |
+
+    (linhaRainha2 = linhaRainha3 | 
+    linhaRainha2 = linhaRainha4 | 
+    linhaRainha2 = linhaRainha5 | 
+    linhaRainha2 = linhaRainha6 | 
+    linhaRainha2 = linhaRainha7 | 
+    linhaRainha2 = linhaRainha8) |
+
+    (linhaRainha3 = linhaRainha4 | 
+    linhaRainha3 = linhaRainha5 | 
+    linhaRainha3 = linhaRainha6 | 
+    linhaRainha3 = linhaRainha7 | 
+    linhaRainha3 = linhaRainha8) |
+
+    (linhaRainha4 = linhaRainha5 | 
+    linhaRainha4 = linhaRainha6 | 
+    linhaRainha4 = linhaRainha7 | 
+    linhaRainha4 = linhaRainha8) |
+
+    (linhaRainha5 = linhaRainha6 | 
+    linhaRainha5 = linhaRainha7 | 
+    linhaRainha5 = linhaRainha8) |
+
+    (linhaRainha6 = linhaRainha7 | 
+    linhaRainha6 = linhaRainha8) |
+
+    (linhaRainha7 = linhaRainha8) | 
+
+    -- Diagonal Crescente
+    ((linhaRainha1 + 1) = (linhaRainha2 + 2) | 
+    (linhaRainha1 + 1) = (linhaRainha3 + 3) | 
+    (linhaRainha1 + 1) = (linhaRainha4 + 4) | 
+    (linhaRainha1 + 1) = (linhaRainha5 + 5) |
+    (linhaRainha1 + 1) = (linhaRainha6 + 6) |
+    (linhaRainha1 + 1) = (linhaRainha7 + 7) |
+    (linhaRainha1 + 1) = (linhaRainha8 + 8)) |
+
+    ((linhaRainha2 + 2) = (linhaRainha3 + 3) | 
+    (linhaRainha2 + 2) = (linhaRainha4 + 4) | 
+    (linhaRainha2 + 2) = (linhaRainha5 + 5) |
+    (linhaRainha2 + 2) = (linhaRainha6 + 6) |
+    (linhaRainha2 + 2) = (linhaRainha7 + 7) |
+    (linhaRainha2 + 2) = (linhaRainha8 + 8)) |
+
+    ((linhaRainha3 + 3) = (linhaRainha4 + 4) | 
+    (linhaRainha3 + 3) = (linhaRainha5 + 5) |
+    (linhaRainha3 + 3) = (linhaRainha6 + 6) |
+    (linhaRainha3 + 3) = (linhaRainha7 + 7) |
+    (linhaRainha3 + 3) = (linhaRainha8 + 8)) |
+
+    ((linhaRainha4 + 4) = (linhaRainha5 + 5) |
+    (linhaRainha4 + 4) = (linhaRainha6 + 6) |
+    (linhaRainha4 + 4) = (linhaRainha7 + 7) |
+    (linhaRainha4 + 4) = (linhaRainha8 + 8)) |
+
+    ((linhaRainha5 + 5) = (linhaRainha6 + 6) |
+    (linhaRainha5 + 5) = (linhaRainha7 + 7) |
+    (linhaRainha5 + 5) = (linhaRainha8 + 8)) |
+
+    ((linhaRainha6 + 6) = (linhaRainha7 + 7) |
+    (linhaRainha6 + 6) = (linhaRainha8 + 8)) |
+
+    ((linhaRainha7 + 7) = (linhaRainha8 + 8)) | 
+    
+    -- Diagonal Decrescente
+    ((linhaRainha1 - 1) = (linhaRainha2 - 2) | 
+    (linhaRainha1 - 1) = (linhaRainha3 - 3) | 
+    (linhaRainha1 - 1) = (linhaRainha4 - 4) | 
+    (linhaRainha1 - 1) = (linhaRainha5 - 5) |
+    (linhaRainha1 - 1) = (linhaRainha6 - 6) |
+    (linhaRainha1 - 1) = (linhaRainha7 - 7) |
+    (linhaRainha1 - 1) = (linhaRainha8 - 8)) |
+
+    ((linhaRainha2 - 2) = (linhaRainha3 - 3) | 
+    (linhaRainha2 - 2) = (linhaRainha4 - 4) | 
+    (linhaRainha2 - 2) = (linhaRainha5 - 5) |
+    (linhaRainha2 - 2) = (linhaRainha6 - 6) |
+    (linhaRainha2 - 2) = (linhaRainha7 - 7) |
+    (linhaRainha2 - 2) = (linhaRainha8 - 8)) |
+
+    ((linhaRainha3 - 3) = (linhaRainha4 - 4) | 
+    (linhaRainha3 - 3) = (linhaRainha5 - 5) |
+    (linhaRainha3 - 3) = (linhaRainha6 - 6) |
+    (linhaRainha3 - 3) = (linhaRainha7 - 7) |
+    (linhaRainha3 - 3) = (linhaRainha8 - 8)) |
+
+    ((linhaRainha4 - 4) = (linhaRainha5 - 5) |
+    (linhaRainha4 - 4) = (linhaRainha6 - 6) |
+    (linhaRainha4 - 4) = (linhaRainha7 - 7) |
+    (linhaRainha4 - 4) = (linhaRainha8 - 8)) |
+
+    ((linhaRainha5 - 5) = (linhaRainha6 - 6) |
+    (linhaRainha5 - 5) = (linhaRainha7 - 7) |
+    (linhaRainha5 - 5) = (linhaRainha8 - 8)) |
+
+    ((linhaRainha6 - 6) = (linhaRainha7 - 7) |
+    (linhaRainha6 - 6) = (linhaRainha8 - 8)) |
+
+    ((linhaRainha7 - 7) = (linhaRainha8 - 8)))
+)
+
+MODULE rainha1(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo)
+
+ASSIGN
+next(linhaRainha1) := 
+  case  
+    linhaRainha1 = 0 & semaforo = 1 : 1;
+    linhaRainha1 = 1 & semaforo = 1 : 2;
+    linhaRainha1 = 2 & semaforo = 1 : 3;
+    linhaRainha1 = 3 & semaforo = 1 : 4;
+    linhaRainha1 = 4 & semaforo = 1 : 5;
+    linhaRainha1 = 5 & semaforo = 1 : 6;
+    linhaRainha1 = 6 & semaforo = 1 : 7;
+    linhaRainha1 = 7 & semaforo = 1 : 8;
+    linhaRainha1 = 8 & semaforo = 1 : 9;
+    linhaRainha1 = 9 & semaforo = 1 : 0;
+    
+    TRUE: linhaRainha1;
+  esac;
+
+
+
+MODULE rainha2(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo)
+
+ASSIGN
+next(linhaRainha2) := 
+  case
+    linhaRainha2 < 1 & semaforo = 2 &
+    !((1 = linhaRainha1) |
+    (((1 + 2) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((1 - 2) = (linhaRainha1 - 1)) & linhaRainha1 > 0)) : 1;
+    
+    linhaRainha2 < 2 & semaforo = 2 &
+    !((2 = linhaRainha1) |
+    (((2 + 2) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((2 - 2) = (linhaRainha1 - 1)) & linhaRainha1 > 0)): 2;
+    
+    linhaRainha2 < 3 & semaforo = 2 &
+    !((3 = linhaRainha1) |
+    (((3 + 2) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((3 - 2) = (linhaRainha1 - 1)) & linhaRainha1 > 0)) : 3;
+    
+    linhaRainha2 < 4 & semaforo = 2 &
+    !((4 = linhaRainha1) |
+    (((4 + 2) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((4 - 2) = (linhaRainha1 - 1)) & linhaRainha1 > 0)) : 4;
+    
+    linhaRainha2 < 5 & semaforo = 2 &
+    !((5 = linhaRainha1) |
+    (((5 + 2) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((5 - 2) = (linhaRainha1 - 1)) & linhaRainha1 > 0)) : 5;
+
+    linhaRainha2 < 6 & semaforo = 2 &
+    !((6 = linhaRainha1) |
+    (((6 + 2) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((6 - 2) = (linhaRainha1 - 1)) & linhaRainha1 > 0)) : 6;
+
+    linhaRainha2 < 7 & semaforo = 2 &
+    !((7 = linhaRainha1) |
+    (((7 + 2) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((7 - 2) = (linhaRainha1 - 1)) & linhaRainha1 > 0)) : 7;
+
+    linhaRainha2 < 8 & semaforo = 2 &
+    !((8 = linhaRainha1) |
+    (((8 + 2) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((8 - 2) = (linhaRainha1 - 1)) & linhaRainha1 > 0)) : 8;
+
+    linhaRainha2 < 9 & semaforo = 2 : 9;
+    linhaRainha2 = 9 & semaforo = 2 : 0;
+    
+    TRUE: linhaRainha2;
+  esac;
+
+
+MODULE rainha3(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo)
+
+ASSIGN
+next(linhaRainha3) := 
+  case
+    linhaRainha3 < 1 & semaforo = 3 & 
+    !((1 = linhaRainha1) |
+    (1 = linhaRainha2) |
+    (((1 + 3) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((1 + 3) = (linhaRainha2 + 2)) & linhaRainha2 > 0) |
+    (((1 - 3) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((1 - 3) = (linhaRainha2 - 2)) & linhaRainha2 > 0)) : 1;
+    
+    linhaRainha3 < 2 & semaforo = 3 &
+    !((2 = linhaRainha1) |
+    (2 = linhaRainha2) |
+    (((2 + 3) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((2 + 3) = (linhaRainha2 + 2)) & linhaRainha2 > 0) |
+    (((2 - 3) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((2 - 3) = (linhaRainha2 - 2)) & linhaRainha2 > 0)) : 2;
+    
+    linhaRainha3 < 3 & semaforo = 3 &
+    !((3 = linhaRainha1) |
+    (3 = linhaRainha2) |
+    (((3 + 3) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((3 + 3) = (linhaRainha2 + 2)) & linhaRainha2 > 0) |
+    (((3 - 3) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((3 - 3) = (linhaRainha2 - 2)) & linhaRainha2 > 0)) : 3;
+    
+    linhaRainha3 < 4 & semaforo = 3 &
+    !((4 = linhaRainha1) |
+    (4 = linhaRainha2) |
+    (((4 + 3) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((4 + 3) = (linhaRainha2 + 2)) & linhaRainha2 > 0) |
+    (((4 - 3) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((4 - 3) = (linhaRainha2 - 2)) & linhaRainha2 > 0)) : 4;
+    
+    linhaRainha3 < 5 & semaforo = 3 &
+    !((5 = linhaRainha1) |
+    (5 = linhaRainha2) |
+    (((5 + 3) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((5 + 3) = (linhaRainha2 + 2)) & linhaRainha2 > 0) |
+    (((5 - 3) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((5 - 3) = (linhaRainha2 - 2)) & linhaRainha2 > 0)) : 5;
+
+    linhaRainha3 < 6 & semaforo = 3 &
+    !((6 = linhaRainha1) |
+    (6 = linhaRainha2) |
+    (((6 + 3) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((6 + 3) = (linhaRainha2 + 2)) & linhaRainha2 > 0) |
+    (((6 - 3) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((6 - 3) = (linhaRainha2 - 2)) & linhaRainha2 > 0)) : 6;
+    
+    linhaRainha3 < 7 & semaforo = 3 &
+    !((6 = linhaRainha1) |
+    (6 = linhaRainha2) |
+    (((7 + 3) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((7 + 3) = (linhaRainha2 + 2)) & linhaRainha2 > 0) |
+    (((7 - 3) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((7 - 3) = (linhaRainha2 - 2)) & linhaRainha2 > 0)) : 7;
+    
+    linhaRainha3 < 8 & semaforo = 3 &
+    !((8 = linhaRainha1) |
+    (8 = linhaRainha2) |
+    (((8 + 3) = (linhaRainha1 + 1)) & linhaRainha1 > 0) |
+    (((8 + 3) = (linhaRainha2 + 2)) & linhaRainha2 > 0) |
+    (((8 - 3) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((8 - 3) = (linhaRainha2 - 2)) & linhaRainha2 > 0)) : 8;
+
+    linhaRainha3 < 9 & semaforo = 3 : 9;
+    linhaRainha3 = 9 & semaforo = 3 : 0;
+    
+    TRUE: linhaRainha3;
+  esac;
+
+
+MODULE rainha4(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo)
+
+ASSIGN
+next(linhaRainha4) := 
+  case
+    linhaRainha4 < 1 & semaforo = 4 & 
+    !((1 = linhaRainha1) | 
+    (1 = linhaRainha2) | 
+    (1 = linhaRainha3) | 
+    -- Diagonal
+    (((1 + 4) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((1 + 4) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((1 + 4) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((1 - 4) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((1 - 4) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((1 - 4) = (linhaRainha3 - 3)) & linhaRainha3 > 0)): 1;
+
+    linhaRainha4 < 2 & semaforo = 4 & 
+    !((2 = linhaRainha1) | 
+    (2 = linhaRainha2) | 
+    (2 = linhaRainha3) | 
+    -- Diagonal
+    (((2 + 4) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((2 + 4) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((2 + 4) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((2 - 4) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((2 - 4) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((2 - 4) = (linhaRainha3 - 3)) & linhaRainha3 > 0)): 2;
+
+    linhaRainha4 < 3 & semaforo = 4 & 
+    !((3 = linhaRainha1) | 
+    (3 = linhaRainha2) | 
+    (3 = linhaRainha3) | 
+    -- Diagonal
+    (((3 + 4) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((3 + 4) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((3 + 4) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((3 - 4) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((3 - 4) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((3 - 4) = (linhaRainha3 - 3)) & linhaRainha3 > 0)): 3;
+
+    linhaRainha4 < 4 & semaforo = 4 & 
+    !((4 = linhaRainha1) | 
+    (4 = linhaRainha2) | 
+    (4 = linhaRainha3) | 
+    -- Diagonal
+    (((4 + 4) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((4 + 4) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((4 + 4) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((4 - 4) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((4 - 4) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((4 - 4) = (linhaRainha3 - 3)) & linhaRainha3 > 0)): 4;
+   
+    linhaRainha4 < 5 & semaforo = 4 & 
+    !((5 = linhaRainha1) | 
+    (5 = linhaRainha2) | 
+    (5 = linhaRainha3) | 
+    -- Diagonal
+    (((5 + 4) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((5 + 4) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((5 + 4) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((5 - 4) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((5 - 4) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((5 - 4) = (linhaRainha3 - 3)) & linhaRainha3 > 0)): 5;
+
+    linhaRainha4 < 6 & semaforo = 4 & 
+    !((6 = linhaRainha1) | 
+    (6 = linhaRainha2) | 
+    (6 = linhaRainha3) | 
+    -- Diagonal
+    (((6 + 4) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((6 + 4) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((6 + 4) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((6 - 4) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((6 - 4) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((6 - 4) = (linhaRainha3 - 3)) & linhaRainha3 > 0)): 6;
+
+    linhaRainha4 < 7 & semaforo = 4 & 
+    !((7 = linhaRainha1) | 
+    (7 = linhaRainha2) | 
+    (7 = linhaRainha3) | 
+    -- Diagonal
+    (((7 + 4) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((7 + 4) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((7 + 4) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((7 - 4) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((7 - 4) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((7 - 4) = (linhaRainha3 - 3)) & linhaRainha3 > 0)): 7;
+
+    linhaRainha4 < 8 & semaforo = 4 & 
+    !((8 = linhaRainha1) | 
+    (8 = linhaRainha2) | 
+    (8 = linhaRainha3) | 
+    -- Diagonal
+    (((8 + 4) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((8 + 4) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((8 + 4) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((8 - 4) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((8 - 4) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((8 - 4) = (linhaRainha3 - 3)) & linhaRainha3 > 0)): 8;
+
+    linhaRainha4 < 9 & semaforo = 4 : 9;
+    linhaRainha4 = 9 & semaforo = 4 : 0;
+
+    TRUE: linhaRainha4;
+  esac;
+
+
+MODULE rainha5(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo)
+
+ASSIGN
+next(linhaRainha5) := 
+  case
+    linhaRainha5 < 1 & semaforo = 5 & 
+    !((1 = linhaRainha1) | 
+    (1 = linhaRainha2) | 
+    (1 = linhaRainha3) | 
+    (1 = linhaRainha4) |
+    -- Diagonal
+    (((1 + 5) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((1 + 5) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((1 + 5) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((1 + 5) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((1 - 5) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((1 - 5) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((1 - 5) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((1 - 5) = (linhaRainha4 - 4)) & linhaRainha4 > 0)): 1;
+
+    linhaRainha5 < 2 & semaforo = 5 & 
+    !((2 = linhaRainha1) | 
+    (2 = linhaRainha2) | 
+    (2 = linhaRainha3) |
+    (2 = linhaRainha4) |
+    -- Diagonal
+    (((2 + 5) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((2 + 5) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((2 + 5) = (linhaRainha3 + 3)) & linhaRainha3 > 0) |
+    (((2 + 5) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((2 - 5) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((2 - 5) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((2 - 5) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((2 - 5) = (linhaRainha4 - 4)) & linhaRainha4 > 0)): 2;
+
+    linhaRainha5 < 3 & semaforo = 5 & 
+    !((3 = linhaRainha1) | 
+    (3 = linhaRainha2) | 
+    (3 = linhaRainha3) |
+    (3 = linhaRainha4) |
+    -- Diagonal
+    (((3 + 5) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((3 + 5) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((3 + 5) = (linhaRainha3 + 3)) & linhaRainha3 > 0) |
+    (((3 + 5) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((3 - 5) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((3 - 5) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((3 - 5) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((3 - 5) = (linhaRainha4 - 4)) & linhaRainha4 > 0)): 3;
+
+    linhaRainha5 < 4 & semaforo = 5 & 
+    !((4 = linhaRainha1) | 
+    (4 = linhaRainha2) | 
+    (4 = linhaRainha3) |
+    (4 = linhaRainha4) |
+    -- Diagonal
+    (((4 + 5) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((4 + 5) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((4 + 5) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((4 + 5) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((4 - 5) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((4 - 5) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((4 - 5) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((4 - 5) = (linhaRainha4 - 4)) & linhaRainha4 > 0)): 4;
+   
+    linhaRainha5 < 5 & semaforo = 5 & 
+    !((5 = linhaRainha1) | 
+    (5 = linhaRainha2) | 
+    (5 = linhaRainha3) |
+    (5 = linhaRainha4) |
+    -- Diagonal
+    (((5 + 5) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((5 + 5) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((5 + 5) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((5 + 5) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((5 - 5) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((5 - 5) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((5 - 5) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((5 - 5) = (linhaRainha4 - 4)) & linhaRainha4 > 0)): 5;
+
+    linhaRainha5 < 6 & semaforo = 5 & 
+    !((6 = linhaRainha1) | 
+    (6 = linhaRainha2) | 
+    (6 = linhaRainha3) |
+    (6 = linhaRainha4) |
+    -- Diagonal
+    (((6 + 5) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((6 + 5) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((6 + 5) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((6 + 5) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((6 - 5) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((6 - 5) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((6 - 5) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((6 - 5) = (linhaRainha4 - 4)) & linhaRainha4 > 0)): 6;
+
+    linhaRainha5 < 7 & semaforo = 5 & 
+    !((7 = linhaRainha1) | 
+    (7 = linhaRainha2) | 
+    (7 = linhaRainha3) |
+    (7 = linhaRainha4) |
+    -- Diagonal
+    (((7 + 5) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((7 + 5) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((7 + 5) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((7 + 5) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((7 - 5) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((7 - 5) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((7 - 5) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((7 - 5) = (linhaRainha4 - 4)) & linhaRainha4 > 0)): 7;
+
+    linhaRainha5 < 8 & semaforo = 5 & 
+    !((8 = linhaRainha1) | 
+    (8 = linhaRainha2) | 
+    (8 = linhaRainha3) |
+    (8 = linhaRainha4) |
+    -- Diagonal
+    (((8 + 5) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((8 + 5) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((8 + 5) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((8 + 5) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((8 - 5) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((8 - 5) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((8 - 5) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((8 - 5) = (linhaRainha4 - 4)) & linhaRainha4 > 0)): 8;
+
+    linhaRainha5 < 9 & semaforo = 5 : 9;
+    linhaRainha5 = 9 & semaforo = 5 : 0;
+
+    TRUE: linhaRainha5;
+  esac;
+
+
+MODULE rainha6(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo)
+
+ASSIGN
+next(linhaRainha6) := 
+  case
+    linhaRainha6 < 1 & semaforo = 6 & 
+    !((1 = linhaRainha1) | 
+    (1 = linhaRainha2) | 
+    (1 = linhaRainha3) | 
+    (1 = linhaRainha4) |
+    (1 = linhaRainha5) |
+    -- Diagonal
+    (((1 + 6) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((1 + 6) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((1 + 6) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((1 + 6) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((1 + 6) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((1 - 6) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((1 - 6) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((1 - 6) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((1 - 6) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((1 - 6) = (linhaRainha5 - 5)) & linhaRainha5 > 0)): 1;
+
+    linhaRainha6 < 2 & semaforo = 6 & 
+    !((2 = linhaRainha1) | 
+    (2 = linhaRainha2) | 
+    (2 = linhaRainha3) |
+    (2 = linhaRainha4) |
+    (2 = linhaRainha5) |
+    -- Diagonal
+    (((2 + 6) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((2 + 6) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((2 + 6) = (linhaRainha3 + 3)) & linhaRainha3 > 0) |
+    (((2 + 6) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((2 + 6) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((2 - 6) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((2 - 6) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((2 - 6) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((2 - 6) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((2 - 6) = (linhaRainha5 - 5)) & linhaRainha5 > 0)): 2;
+
+    linhaRainha6 < 3 & semaforo = 6 & 
+    !((3 = linhaRainha1) | 
+    (3 = linhaRainha2) | 
+    (3 = linhaRainha3) |
+    (3 = linhaRainha4) |
+    (3 = linhaRainha5) |
+    -- Diagonal
+    (((3 + 6) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((3 + 6) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((3 + 6) = (linhaRainha3 + 3)) & linhaRainha3 > 0) |
+    (((3 + 6) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((3 + 6) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((3 - 6) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((3 - 6) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((3 - 6) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((3 - 6) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((3 - 6) = (linhaRainha5 - 5)) & linhaRainha5 > 0)): 3;
+
+    linhaRainha6 < 4 & semaforo = 6 & 
+    !((4 = linhaRainha1) | 
+    (4 = linhaRainha2) | 
+    (4 = linhaRainha3) |
+    (4 = linhaRainha4) |
+    (4 = linhaRainha5) |
+    -- Diagonal
+    (((4 + 6) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((4 + 6) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((4 + 6) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((4 + 6) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((4 + 6) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((4 - 6) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((4 - 6) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((4 - 6) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((4 - 6) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((4 - 6) = (linhaRainha5 - 5)) & linhaRainha5 > 0)): 4;
+   
+    linhaRainha6 < 5 & semaforo = 6 & 
+    !((5 = linhaRainha1) | 
+    (5 = linhaRainha2) | 
+    (5 = linhaRainha3) |
+    (5 = linhaRainha4) |
+    (5 = linhaRainha5) |
+    -- Diagonal
+    (((5 + 6) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((5 + 6) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((5 + 6) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((5 + 6) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((5 + 6) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((5 - 6) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((5 - 6) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((5 - 6) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((5 - 6) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((5 - 6) = (linhaRainha5 - 5)) & linhaRainha5 > 0)): 5;
+
+    linhaRainha6 < 6 & semaforo = 6 & 
+    !((6 = linhaRainha1) | 
+    (6 = linhaRainha2) | 
+    (6 = linhaRainha3) |
+    (6 = linhaRainha4) |
+    (6 = linhaRainha5) |
+    -- Diagonal
+    (((6 + 6) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((6 + 6) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((6 + 6) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((6 + 6) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((6 + 6) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((6 - 6) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((6 - 6) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((6 - 6) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((6 - 6) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((6 - 6) = (linhaRainha5 - 5)) & linhaRainha5 > 0)): 6;
+
+    linhaRainha6 < 7 & semaforo = 6 & 
+    !((7 = linhaRainha1) | 
+    (7 = linhaRainha2) | 
+    (7 = linhaRainha3) |
+    (7 = linhaRainha4) |
+    (7 = linhaRainha5) |
+    -- Diagonal
+    (((7 + 6) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((7 + 6) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((7 + 6) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((7 + 6) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((7 + 6) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((7 - 6) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((7 - 6) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((7 - 6) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((7 - 6) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((7 - 6) = (linhaRainha5 - 5)) & linhaRainha5 > 0)): 7;
+
+    linhaRainha6 < 8 & semaforo = 6 & 
+    !((8 = linhaRainha1) | 
+    (8 = linhaRainha2) | 
+    (8 = linhaRainha3) |
+    (8 = linhaRainha4) |
+    (8 = linhaRainha5) |
+    -- Diagonal
+    (((8 + 6) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((8 + 6) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((8 + 6) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((8 + 6) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((8 + 6) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((8 - 6) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((8 - 6) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((8 - 6) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((8 - 6) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((8 - 6) = (linhaRainha5 - 5)) & linhaRainha5 > 0)): 8;
+
+    linhaRainha6 < 9 & semaforo = 6 : 9;
+    linhaRainha6 = 9 & semaforo = 6 : 0;
+
+    TRUE: linhaRainha6;
+  esac;
+
+MODULE rainha7(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo)
+
+ASSIGN
+next(linhaRainha7) := 
+  case
+    linhaRainha7 < 1 & semaforo = 7 & 
+    !((1 = linhaRainha1) | 
+    (1 = linhaRainha2) | 
+    (1 = linhaRainha3) | 
+    (1 = linhaRainha4) |
+    (1 = linhaRainha5) |
+    (1 = linhaRainha6) |
+    -- Diagonal
+    (((1 + 7) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((1 + 7) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((1 + 7) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((1 + 7) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((1 + 7) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((1 + 7) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((1 - 7) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((1 - 7) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((1 - 7) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((1 - 7) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((1 - 7) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((1 - 7) = (linhaRainha6 - 6)) & linhaRainha6 > 0)): 1;
+
+    linhaRainha7 < 2 & semaforo = 7 & 
+    !((2 = linhaRainha1) | 
+    (2 = linhaRainha2) | 
+    (2 = linhaRainha3) |
+    (2 = linhaRainha4) |
+    (2 = linhaRainha5) |
+    (2 = linhaRainha6) |
+    -- Diagonal
+    (((2 + 7) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((2 + 7) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((2 + 7) = (linhaRainha3 + 3)) & linhaRainha3 > 0) |
+    (((2 + 7) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((2 + 7) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((2 + 7) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((2 - 7) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((2 - 7) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((2 - 7) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((2 - 7) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((2 - 7) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((2 - 7) = (linhaRainha6 - 6)) & linhaRainha6 > 0)): 2;
+
+    linhaRainha7 < 3 & semaforo = 7 & 
+    !((3 = linhaRainha1) | 
+    (3 = linhaRainha2) | 
+    (3 = linhaRainha3) |
+    (3 = linhaRainha4) |
+    (3 = linhaRainha5) |
+    (3 = linhaRainha6) |
+    -- Diagonal
+    (((3 + 7) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((3 + 7) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((3 + 7) = (linhaRainha3 + 3)) & linhaRainha3 > 0) |
+    (((3 + 7) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((3 + 7) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((3 + 7) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((3 - 7) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((3 - 7) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((3 - 7) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((3 - 7) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((3 - 7) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((3 - 7) = (linhaRainha6 - 6)) & linhaRainha6 > 0)): 3;
+
+    linhaRainha7 < 4 & semaforo = 7 & 
+    !((4 = linhaRainha1) | 
+    (4 = linhaRainha2) | 
+    (4 = linhaRainha3) |
+    (4 = linhaRainha4) |
+    (4 = linhaRainha5) |
+    (4 = linhaRainha6) |
+    -- Diagonal
+    (((4 + 7) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((4 + 7) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((4 + 7) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((4 + 7) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((4 + 7) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((4 + 7) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((4 - 7) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((4 - 7) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((4 - 7) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((4 - 7) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((4 - 7) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((4 - 7) = (linhaRainha6 - 6)) & linhaRainha6 > 0)): 4;
+   
+    linhaRainha7 < 5 & semaforo = 7 & 
+    !((5 = linhaRainha1) | 
+    (5 = linhaRainha2) | 
+    (5 = linhaRainha3) |
+    (5 = linhaRainha4) |
+    (5 = linhaRainha5) |
+    (5 = linhaRainha6) |
+    -- Diagonal
+    (((5 + 7) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((5 + 7) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((5 + 7) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((5 + 7) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((5 + 7) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((5 + 7) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((5 - 7) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((5 - 7) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((5 - 7) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((5 - 7) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((5 - 7) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((5 - 7) = (linhaRainha6 - 6)) & linhaRainha6 > 0)): 5;
+
+    linhaRainha7 < 6 & semaforo = 7 & 
+    !((6 = linhaRainha1) | 
+    (6 = linhaRainha2) | 
+    (6 = linhaRainha3) |
+    (6 = linhaRainha4) |
+    (6 = linhaRainha5) |
+    (6 = linhaRainha6) |
+    -- Diagonal
+    (((6 + 7) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((6 + 7) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((6 + 7) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((6 + 7) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((6 + 7) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((6 + 7) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((6 - 7) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((6 - 7) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((6 - 7) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((6 - 7) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((6 - 7) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((6 - 7) = (linhaRainha6 - 6)) & linhaRainha6 > 0)): 6;
+
+    linhaRainha7 < 7 & semaforo = 7 & 
+    !((7 = linhaRainha1) | 
+    (7 = linhaRainha2) | 
+    (7 = linhaRainha3) |
+    (7 = linhaRainha4) |
+    (7 = linhaRainha5) |
+    (7 = linhaRainha6) |
+    -- Diagonal
+    (((7 + 7) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((7 + 7) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((7 + 7) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((7 + 7) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((7 + 7) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((7 + 7) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((7 - 7) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((7 - 7) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((7 - 7) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((7 - 7) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((7 - 7) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((7 - 7) = (linhaRainha6 - 6)) & linhaRainha6 > 0)): 7;
+
+    linhaRainha7 < 8 & semaforo = 7 & 
+    !((8 = linhaRainha1) | 
+    (8 = linhaRainha2) | 
+    (8 = linhaRainha3) |
+    (8 = linhaRainha4) |
+    (8 = linhaRainha5) |
+    (8 = linhaRainha6) |
+    -- Diagonal
+    (((8 + 7) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((8 + 7) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((8 + 7) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((8 + 7) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((8 + 7) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((8 + 7) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((8 - 7) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((8 - 7) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((8 - 7) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((8 - 7) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((8 - 7) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((8 - 7) = (linhaRainha6 - 6)) & linhaRainha6 > 0)): 8;
+
+    linhaRainha7 < 9 & semaforo = 7 : 9;
+    linhaRainha7 = 9 & semaforo = 7 : 0;
+
+    TRUE: linhaRainha7;
+  esac;
+
+
+MODULE rainha8(linhaRainha1, linhaRainha2, linhaRainha3, linhaRainha4, linhaRainha5, linhaRainha6, linhaRainha7, linhaRainha8, semaforo)
+
+ASSIGN
+next(linhaRainha8) := 
+  case
+    linhaRainha8 < 1 & semaforo = 8 & 
+    !((1 = linhaRainha1) | 
+    (1 = linhaRainha2) | 
+    (1 = linhaRainha3) | 
+    (1 = linhaRainha4) |
+    (1 = linhaRainha5) |
+    (1 = linhaRainha6) |
+    (1 = linhaRainha7) |
+    -- Diagonal
+    (((1 + 8) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((1 + 8) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((1 + 8) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((1 + 8) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((1 + 8) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((1 + 8) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((1 + 8) = (linhaRainha7 + 7)) & linhaRainha7 > 0) |
+    (((1 - 8) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((1 - 8) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((1 - 8) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((1 - 8) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((1 - 8) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((1 - 8) = (linhaRainha6 - 6)) & linhaRainha6 > 0) |
+    (((1 - 8) = (linhaRainha7 - 7)) & linhaRainha7 > 0)): 1;
+
+    linhaRainha8 < 2 & semaforo = 8 & 
+    !((2 = linhaRainha1) | 
+    (2 = linhaRainha2) | 
+    (2 = linhaRainha3) |
+    (2 = linhaRainha4) |
+    (2 = linhaRainha5) |
+    (2 = linhaRainha6) |
+    (2 = linhaRainha7) |
+    -- Diagonal
+    (((2 + 8) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((2 + 8) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((2 + 8) = (linhaRainha3 + 3)) & linhaRainha3 > 0) |
+    (((2 + 8) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((2 + 8) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((2 + 8) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((2 + 8) = (linhaRainha7 + 7)) & linhaRainha7 > 0) |
+    (((2 - 8) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((2 - 8) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((2 - 8) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((2 - 8) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((2 - 8) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((2 - 8) = (linhaRainha6 - 6)) & linhaRainha6 > 0) |
+    (((2 - 8) = (linhaRainha7 - 7)) & linhaRainha7 > 0)): 2;
+
+    linhaRainha8 < 3 & semaforo = 8 & 
+    !((3 = linhaRainha1) | 
+    (3 = linhaRainha2) | 
+    (3 = linhaRainha3) |
+    (3 = linhaRainha4) |
+    (3 = linhaRainha5) |
+    (3 = linhaRainha6) |
+    (3 = linhaRainha7) |
+    -- Diagonal
+    (((3 + 8) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((3 + 8) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((3 + 8) = (linhaRainha3 + 3)) & linhaRainha3 > 0) |
+    (((3 + 8) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((3 + 8) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((3 + 8) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((3 + 8) = (linhaRainha7 + 7)) & linhaRainha7 > 0) |
+    (((3 - 8) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((3 - 8) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((3 - 8) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((3 - 8) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((3 - 8) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((3 - 8) = (linhaRainha6 - 6)) & linhaRainha6 > 0) |
+    (((3 - 8) = (linhaRainha7 - 7)) & linhaRainha7 > 0)): 3;
+
+    linhaRainha8 < 4 & semaforo = 8 & 
+    !((4 = linhaRainha1) | 
+    (4 = linhaRainha2) | 
+    (4 = linhaRainha3) |
+    (4 = linhaRainha4) |
+    (4 = linhaRainha5) |
+    (4 = linhaRainha6) |
+    (4 = linhaRainha7) |
+    -- Diagonal
+    (((4 + 8) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((4 + 8) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((4 + 8) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((4 + 8) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((4 + 8) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((4 + 8) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((4 + 8) = (linhaRainha7 + 7)) & linhaRainha7 > 0) |
+    (((4 - 8) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((4 - 8) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((4 - 8) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((4 - 8) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((4 - 8) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((4 - 8) = (linhaRainha6 - 6)) & linhaRainha6 > 0) |
+    (((4 - 8) = (linhaRainha7 - 7)) & linhaRainha7 > 0)): 4;
+   
+    linhaRainha8 < 5 & semaforo = 8 & 
+    !((5 = linhaRainha1) | 
+    (5 = linhaRainha2) | 
+    (5 = linhaRainha3) |
+    (5 = linhaRainha4) |
+    (5 = linhaRainha5) |
+    (5 = linhaRainha6) |
+    (5 = linhaRainha7) |
+    -- Diagonal
+    (((5 + 8) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((5 + 8) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((5 + 8) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((5 + 8) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((5 + 8) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((5 + 8) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((5 + 8) = (linhaRainha7 + 7)) & linhaRainha7 > 0) |
+    (((5 - 8) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((5 - 8) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((5 - 8) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((5 - 8) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((5 - 8) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((5 - 8) = (linhaRainha6 - 6)) & linhaRainha6 > 0) |
+    (((5 - 8) = (linhaRainha7 - 7)) & linhaRainha7 > 0)): 5;
+
+    linhaRainha8 < 6 & semaforo = 8 & 
+    !((6 = linhaRainha1) | 
+    (6 = linhaRainha2) | 
+    (6 = linhaRainha3) |
+    (6 = linhaRainha4) |
+    (6 = linhaRainha5) |
+    (6 = linhaRainha6) |
+    (6 = linhaRainha7) |
+    -- Diagonal
+    (((6 + 8) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((6 + 8) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((6 + 8) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((6 + 8) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((6 + 8) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((6 + 8) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((6 + 8) = (linhaRainha7 + 7)) & linhaRainha7 > 0) |
+    (((6 - 8) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((6 - 8) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((6 - 8) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((6 - 8) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((6 - 8) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((6 - 8) = (linhaRainha6 - 6)) & linhaRainha6 > 0) |
+    (((6 - 8) = (linhaRainha7 - 7)) & linhaRainha7 > 0)): 6;
+
+    linhaRainha8 < 7 & semaforo = 8 & 
+    !((7 = linhaRainha1) | 
+    (7 = linhaRainha2) | 
+    (7 = linhaRainha3) |
+    (7 = linhaRainha4) |
+    (7 = linhaRainha5) |
+    (7 = linhaRainha6) |
+    (7 = linhaRainha7) |
+    -- Diagonal
+    (((7 + 8) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((7 + 8) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((7 + 8) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((7 + 8) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((7 + 8) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((7 + 8) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((7 + 8) = (linhaRainha7 + 7)) & linhaRainha7 > 0) |
+    (((7 - 8) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((7 - 8) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((7 - 8) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((7 - 8) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((7 - 8) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((7 - 8) = (linhaRainha6 - 6)) & linhaRainha6 > 0) |
+    (((7 - 8) = (linhaRainha7 - 7)) & linhaRainha7 > 0)): 7;
+
+    linhaRainha8 < 8 & semaforo = 8 & 
+    !((8 = linhaRainha1) | 
+    (8 = linhaRainha2) | 
+    (8 = linhaRainha3) |
+    (8 = linhaRainha4) |
+    (8 = linhaRainha5) |
+    (8 = linhaRainha6) |
+    (8 = linhaRainha7) |
+    -- Diagonal
+    (((8 + 8) = (linhaRainha1 + 1)) & linhaRainha1 > 0) | 
+    (((8 + 8) = (linhaRainha2 + 2)) & linhaRainha2 > 0) | 
+    (((8 + 8) = (linhaRainha3 + 3)) & linhaRainha3 > 0) | 
+    (((8 + 8) = (linhaRainha4 + 4)) & linhaRainha4 > 0) |
+    (((8 + 8) = (linhaRainha5 + 5)) & linhaRainha5 > 0) |
+    (((8 + 8) = (linhaRainha6 + 6)) & linhaRainha6 > 0) |
+    (((8 + 8) = (linhaRainha7 + 7)) & linhaRainha7 > 0) |
+    (((8 - 8) = (linhaRainha1 - 1)) & linhaRainha1 > 0) |
+    (((8 - 8) = (linhaRainha2 - 2)) & linhaRainha2 > 0) | 
+    (((8 - 8) = (linhaRainha3 - 3)) & linhaRainha3 > 0) |
+    (((8 - 8) = (linhaRainha4 - 4)) & linhaRainha4 > 0) |
+    (((8 - 8) = (linhaRainha5 - 5)) & linhaRainha5 > 0) |
+    (((8 - 8) = (linhaRainha6 - 6)) & linhaRainha6 > 0) |
+    (((8 - 8) = (linhaRainha7 - 7)) & linhaRainha7 > 0)): 8;
+
+    linhaRainha8 < 9 & semaforo = 8 : 9;
+    linhaRainha8 = 9 & semaforo = 8 : 0;
+
+    TRUE: linhaRainha8;
+  esac;
+
+
+FAIRNESS 
+  running;
